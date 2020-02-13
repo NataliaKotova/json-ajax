@@ -1,92 +1,88 @@
+//ajax needs 5 parameters
+//url, sepparate key, 
+
+//ES6 back tick `
+
+//` ${variable name} `
+//select options choose endpoint, collections, photos, users
+//choose the size, full, raw, regular, small, thumb
+
+
+
 console.log('json & ajax');
 
 //to test jquery
 $(document).ready(function(){
-  $('body').click(function(){
-    $(this).css('color', 'blue');
+  var myKey = JSON.parse(apiKey);  
+  console.log(myKey[0]);
+  myKey = myKey[0].key;
+  console.log(myKey);
+
+//reading users choice
+document.getElementById('submit').addEventListener('click', function(){
+	var endPoint = document.getElementById('endpoints').value;
+	var size = document.getElementById('sizes').value;
+  console.log(endPoint,size);
+  displayData(endPoint,size);
   });
 
-
-//JavaScript Data
-// var jsData = [
-//   {
-//     name: "Peter",
-//     age: 40
-//   },
-//   {
-//     name: "John",
-//     age: 25
-//   }
-// ];
-
-// console.log(jsData);
-
-
-// let i;
-// for(i=0; i <jsData.length; i++){
-//   document.getElementById('result').innerHTML +=
-//     '<h1>' + jsData[i].name + ' is ' +
-//     jsData[i].age + ' years old</h1>';
-// }
-
-// //json Data
-// var jsonData = [
-//   {
-//     "name": "Lucy",
-//     "age": 12
-//   },
-//   {
-//     "name": "Mark",
-//     "age": 77
-//   }
-// ];
-
-// console.log(jsonData);
-
-// let j;
-// for(j=0; j <jsData.length; j++){
-//   document.getElementById('result').innerHTML +=
-//     '<h1>' + jsonData[j].name + ' is ' +
-//     jsonData[j].age + ' years old</h1>';
-// }
-
-// //retrieving json data from an external file
-
-// let person = JSON.parse(myData);
-// console.log(person);
-
-// //displaying json objects in the browser window
-
-// var k;
-// for(k=0; k< person.length;k++){
-//   document.getElementById('result').innerHTML +=
-//     '<h1 mb-5>' + person[k].name + ' is ' +
-//     person[k].age + ' years old</h1>';
-// }
-
-// ajax method
+function displayData(ep, si){
+//ep, si - endpoint and size
+  console.log(ep, si);
 
 $.ajax({
-  url:'js/mock_data.json',
+  // url:`https://api.unsplash.com/collections?client_id=${myKey}`,
+  url:`https://api.unsplash.com/${ep}/?client_id=${myKey}`,
   type:'GET',
   data:'json',
   success: function(data){
     console.log(data);
-    var i;
-    for(i=0; i<data.length;i++) {
-      document.getElementById('result').innerHTML +=
-      '<div class="col col-sm-6 col-md-6 col-lg-4 mx-2 border">' + 
-      '<h1>' + data[i].first_name + " " +
-      data[i].last_name + '</h1>' +
-      '<h2>' + data[i].gender + '</h2>' +
-      '<h3>' + data[i].email + '</h3>' +
-      '<img class="img-thumbnail" src=' + data[i].avatar + '" alt="Avatar">' +
-      '</div>';
+    console.log(data[0].cover_photo.urls.raw);
+    if(ep === 'collections'){
+      collections(ep, si);
+    } else if(ep === 'photos'){
+      photos(data, ep, si);
     }
+    function collections(d, e, s) {
+      var k;
+      var userSize;
+      if(s === 'full') {
+        userSize = d[k].cover_photo.urls.full;
+      }
+      else if (s === 'small'){
+        userSize = d[k].cover_photo.urls.small;
+      }
+      else if (s === 'raw'){
+        userSize = d[k].cover_photo.urls.raw;
+      }
+      
+      for (j = 0; j < d.length; j++) {
+        document.getElementById('result').innerHTML +=
+        '<div class="col">' +
+        '<img class="img-thumbnail" alt="Image" src="' + d[k].cover_photo.urls.thumb + '">'+
+        '<div>'
+      }
+    }
+
+    // if(si==='raw'){
+    //   console.log(data[0].cover_photo.urls.raw);
+    // }
+    // else if(si === 'thumb'){
+    //   console.log(data[0].cover_photo.urls.thumb);
+    // }
+    // else if(si === 'small'){
+    //   console.log(data[0].cover_photo.urls.small);
+    // }
+    // else if(si === 'regular'){
+    //   console.log(data[0].cover_photo.urls.regular);
+    // }
+
   }, //success
   error: function(){
     console.log('error');
   } //error
 }); //ajax
 
-});
+}; // function displayData ENDS here
+
+});//document.ready

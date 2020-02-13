@@ -12,8 +12,28 @@
   </head>
   <body>
     <h1 class="jumbotron bg-primary">Json & Ajax</h1>
-    <div class="row" id="result"></div>
-
+    <div class="container">
+    <div class="row">
+      <select id="endpoints" class="col mr-5 mt-5 col-lg-4">
+        <option value="">Endpoints</option>
+        <option value="collections">Collections</option>
+        <option value = "photos">Photos</option>
+        <option>Users</option>
+      </select>
+      <select id="sizes" class="col mr-5 mt-5 col-lg-4">
+        <option>size</option>
+        <option value="full">full</option>
+        <option value="raw">raw</option>
+        <option value="regular">regular</option>
+        <option value="small">small</option>
+        <option value="thumb">thumb</option>
+      </select>
+      <button type="button" id="submit" class="btn btn-info">Submit</button>
+    </div>
+    
+    <div class="row" id="result">
+    </div>
+  </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> -->
@@ -23,7 +43,8 @@
       crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <script src="js/data.json"></script>
+    <script src="js/config.json"></script>
     <script src="js/script.js"></script>
+    
   </body>
 </html>
