@@ -1,5 +1,4 @@
 //ajax needs 5 parameters
-//url, sepparate key, 
 
 //ES6 back tick `
 
@@ -18,71 +17,90 @@ $(document).ready(function(){
   myKey = myKey[0].key;
   console.log(myKey);
 
-//reading users choice
-document.getElementById('submit').addEventListener('click', function(){
-	var endPoint = document.getElementById('endpoints').value;
-	var size = document.getElementById('sizes').value;
-  console.log(endPoint,size);
-  displayData(endPoint,size);
+  //reading users choice
+  document.getElementById('submit').addEventListener('click', function(){
+    var endPoint = document.getElementById('endpoints').value;
+    var size = document.getElementById('sizes').value;
+    console.log(endPoint,size);//actual parameter
+    displayData(endPoint,size);//actual parameter
   });
 
-function displayData(ep, si){
-//ep, si - endpoint and size
-  console.log(ep, si);
+  function displayData(ep, si){
+  //ep, si - endpoint and size
+    console.log(ep, si);
 
-$.ajax({
-  // url:`https://api.unsplash.com/collections?client_id=${myKey}`,
-  url:`https://api.unsplash.com/${ep}/?client_id=${myKey}`,
-  type:'GET',
-  data:'json',
-  success: function(data){
-    console.log(data);
-    console.log(data[0].cover_photo.urls.raw);
-    if(ep === 'collections'){
-      collections(ep, si);
-    } else if(ep === 'photos'){
-      photos(data, ep, si);
-    }
-    function collections(d, e, s) {
-      var k;
-      var userSize;
-      if(s === 'full') {
-        userSize = d[k].cover_photo.urls.full;
-      }
-      else if (s === 'small'){
-        userSize = d[k].cover_photo.urls.small;
-      }
-      else if (s === 'raw'){
-        userSize = d[k].cover_photo.urls.raw;
-      }
-      
-      for (j = 0; j < d.length; j++) {
+    //ajax method
+    $.ajax({
+      // url:`https://api.unsplash.com/collections?client_id=${myKey}`,
+      url:`https://api.unsplash.com/${ep}/?client_id=${myKey}`,
+      type:'GET',
+      data:'json',
+      success: function(data){
+        console.log(data);
+        console.log(data[0].cover_photo.urls.raw);
+        if(ep === 'collections'){
+          collections(data, ep, si);
+        } else if(ep === 'photos'){
+          photos(data, ep, si);
+        }
+        function collections(d, e, s) {
+          var k;
+          var userSize;
+          document.getElementById('result').innerHTML = '';
+            for(k = 0; k < d.length; k++ ){
+              if(s === 'full') {
+                userSize = d[k].cover_photo.urls.full;
+              }
+              else if (s === 'raw'){
+                userSize = d[k].cover_photo.urls.raw;
+              }
+              else if (s === 'regular'){
+                userSize = d[k].cover_photo.urls.regular;
+              }
+              else if (s === 'small'){
+                userSize = d[k].cover_photo.urls.small;
+              }
+              else if (s === 'thumb'){
+                userSize = d[k].cover_photo.urls.thumb;
+              }
+              document.getElementById('result').innerHTML +=
+              '<div class="col">' +
+                '<img class="img-thumbnail" alt="Image" src="' + userSize + '">' +
+              '</div>';
+          }
+        }
+
+        function photos(d, e,s){
+          var j;
+        var photoSize;
+          document.getElementById('result').innerHTML = '';
+      for(j = 0; j < d.length; j++ ){
+        if (s === 'full') {
+          photoSize = d[j].urls.full;
+        } else if (s === 'raw') {
+          photoSize = d[j].urls.raw;
+        } else if (s === 'regular') {
+          photoSize = d[j].urls.regular;
+        }else if (s === 'small') {
+          photoSize = d[j].urls.small;
+        } else if (s === 'thumb') {
+          photoSize = d[j].urls.thumb;
+        }
+
+
         document.getElementById('result').innerHTML +=
         '<div class="col">' +
-        '<img class="img-thumbnail" alt="Image" src="' + d[k].cover_photo.urls.thumb + '">'+
-        '<div>'
+          '<img class="img-thumbnail" alt="Image" src="' + photoSize + '">' +
+        '</div>';
       }
     }
 
-    // if(si==='raw'){
-    //   console.log(data[0].cover_photo.urls.raw);
-    // }
-    // else if(si === 'thumb'){
-    //   console.log(data[0].cover_photo.urls.thumb);
-    // }
-    // else if(si === 'small'){
-    //   console.log(data[0].cover_photo.urls.small);
-    // }
-    // else if(si === 'regular'){
-    //   console.log(data[0].cover_photo.urls.regular);
-    // }
+    }, //success
+    error: function(){
+      console.log('error');
+    } //error
+  }); //ajax
 
-  }, //success
-  error: function(){
-    console.log('error');
-  } //error
-}); //ajax
-
-}; // function displayData ENDS here
+  }; // function displayData ENDS here
 
 });//document.ready
